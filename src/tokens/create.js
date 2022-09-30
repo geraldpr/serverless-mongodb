@@ -1,4 +1,6 @@
+const connectToDatabase = require ("../../database");
 const Responses = require("../common/API_Responses");
+
 
 // declare all characters
 const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -119,31 +121,27 @@ module.exports.createToken = async (event, context) => {
   if(!validEmail(body.email)){
     return Responses._400({message: "Email Invalid" });
   }
-  
-  const AWS = require("aws-sdk"); 
-
-  const db = new AWS.DynamoDB.DocumentClient({ region: "us-east-1"});
-  
-  const tableName = "tokens";
-  
-  const token = generateString(16);
-  
-  const params = {
-    TableName: tableName,
-    Item: {
-      "_id": token,
-      "email": body.email,
-      "card_number": body.card_number,
-      "cvv": body.cvv,
-      "expirante_year": body.expirante_year,
-      "expirante_month": body.expirante_month,   
-      "token": token,   
-    }
-  }
 
   try {
 
-    var data = await db.put(params).promise();    
+    //var data = await db.put(params).promise();    
+    const token = generateString(16);
+
+    const newToken = {
+        "_id": token,
+        "email": body.email,
+        "card_number": body.card_number,
+        "cvv": body.cvv,
+        "expirante_year": body.expirante_year,
+        "expirante_month": body.expirante_month,   
+        "token": token, 
+    }
+
+    const db = await connectToDatabase();
+    const collection = await db.collection("tokens");
+
+    const tokens = await collection.insertOne(newToken);
+    
     return Responses._200({message: "success", data: { token: token } });
 
   } catch(error) {

@@ -1,6 +1,5 @@
 # Tokens-api
-Código como ejemplo para implementar tokenización
-
+Código como ejemplo para implementar tokenización con mongodb
 
 ## Install project
 

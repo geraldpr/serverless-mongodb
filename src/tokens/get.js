@@ -1,3 +1,4 @@
+const connectToDatabase = require ("../../database");
 const Responses = require("../common/API_Responses");
 
 const validToken = num => {
@@ -22,22 +23,16 @@ module.exports.getCreditCard = async (event, context) => {
   
   const id = event.pathParameters.id;
   
-  const AWS = require("aws-sdk");  
-  const db = new AWS.DynamoDB.DocumentClient({ region: "us-east-1"});
-  
-  const tableName = "tokens";
-  
-  const params = {
-    TableName: tableName,
-    Key: {
-      '_id': id,
-    },
-    "ProjectionExpression": "card_number, expirante_year, expirante_month, email"
-  };
-  
   try {
 
-    var data = await db.get(params).promise(); 
+    const db = await connectToDatabase();
+    const collection = await db.collection("tokens");
+
+    const data = await collection.find({
+      token: id
+    }).toArrray();
+
+    //var data = await db.get(params).promise(); 
     
     if (data.Item) {
       return Responses._200({message: "success", data: data });
