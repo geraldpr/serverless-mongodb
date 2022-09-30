@@ -28,9 +28,13 @@ module.exports.getCreditCard = async (event, context) => {
     const db = await connectToDatabase();
     const collection = await db.collection("tokens");
 
-    const data = await collection.find({
-      token: id
-    }).toArrray();
+    const query = { token: id };
+    const options = {
+      // Include only the `title` and `imdb` fields in the returned document
+      projection: { _id:0, card_number:1, expirante_year:1, expirante_month:1, email:1 },
+    };
+
+    const data = await collection.find({query, options}).toArrray();
 
     //var data = await db.get(params).promise(); 
     

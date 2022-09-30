@@ -1,4 +1,4 @@
-# Tokens-api
+# Tokens-mongodb
 Código como ejemplo para implementar tokenización con mongodb
 
 ## Install project
@@ -7,7 +7,7 @@ Código como ejemplo para implementar tokenización con mongodb
 npm install
 ````
 
-## setup your credendials
+## Setup your credendials
 Copy .env.example to .env
 
 Update your credentials to mongodb

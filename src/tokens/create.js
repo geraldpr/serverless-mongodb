@@ -122,6 +122,7 @@ module.exports.createToken = async (event, context) => {
     return Responses._400({message: "Email Invalid" });
   }
 
+
   try {
 
     //var data = await db.put(params).promise();    
@@ -138,9 +139,10 @@ module.exports.createToken = async (event, context) => {
     }
 
     const db = await connectToDatabase();
+    
     const collection = await db.collection("tokens");
 
-    const tokens = await collection.insertOne(newToken);
+    const result = await collection.insertOne(newToken);
     
     return Responses._200({message: "success", data: { token: token } });
 

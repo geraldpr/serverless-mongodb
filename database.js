@@ -9,11 +9,11 @@ const connectToDatabase = async () => {
   } 
   else {
     return MongoClient.connect(process.env.MONGODB_URL, {
-      native_parser: true,
+      useNewUrlParser: true,
       useUnifiedTopology: true,
     })
       .then((client) =>{
-        let db = client.db("DATABASENAME")
+        let db = client.db("Demo")
         console.log("New Database Connection");
         cachedDb = db;
         return cachedDb;
